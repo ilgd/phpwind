@@ -3,11 +3,13 @@ define('PRO','1');
 define('SCR','login');
 require_once('global.php');
 require (L::style('', $skinco, true));
+//这段决定了页面风格
 if ("wind" != $tplpath && file_exists(D_P.'data/style/'.$tplpath.'_css.htm')) {
 	$css_path = D_P.'data/style/'.$tplpath.'_css.htm';
 } else{
 	$css_path = D_P.'data/style/wind_css.htm';
 }
+//初始化$_GET/$_POST全局变量
 S::gp(array('ajax'),'P');
 
 if ($db_pptifopen && $db_ppttype == 'client') {
