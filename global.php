@@ -6,10 +6,14 @@
  *  This software is the proprietary information of phpwind.com.
  *
  */
+//此文件内容为全局变量和公用函数
 
 file_exists('install.php') && header('Location: ./install.php');
-
+//定义只有运行错误和语法编译错误才会显示错误信息
 error_reporting(E_ERROR | E_PARSE);
+//设置php.ini中 magic_quotes_runtime 选项值为0
+//若 magic_quotes_runtime 打开时，所有外部引入的数据库资料或者文件等等都会自动转为含有反斜线溢出字符的资料。
+//0表示关闭此功能
 function_exists('set_magic_quotes_runtime') && set_magic_quotes_runtime(0);
 function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
 
@@ -18,8 +22,13 @@ define('D_P',R_P);
 define('A_P', R_P.'apps/');
 define('P_W','global');
 defined('SCR') || define('SCR','other');
-
+//$P_S_T记录当前时间秒数
 $P_S_T	 = pwMicrotime();
+//判断__FILE__是否为空，返回路径值，并定义为D_P和R_P
+//其中__FILE__文件的完整绝对路径和文件名
+//D_P和R_P的区别在于，当论坛使用二级目录设置时，D_P用于分论坛，R_P用于记录总论坛目录的绝对路径
+//具体参考PHPWind论坛关于二级目录方面的说明
+//在没有使用这方面设置的时候这两个值相等
 require_once(R_P.'require/common.php');
 S::filter();
 require_once (D_P.'data/bbscache/baseconfig.php');
@@ -150,8 +159,9 @@ if ($db_pptifopen && $db_ppttype == 'client') {
 	$loginouturl= "login.php?action=quit&verify=$loginhash";
 	$regurl		= $db_registerfile;
 }
-
+//取在线偏移cookie（在线列表文件中的偏移量）
 $ol_offset = (int)GetCookie('ol_offset');
+//取风格cookie
 $skinco	   = GetCookie('skinco');
 
 if ($db_refreshtime && SCR != 'register' && str_replace("=",'',$REQUEST_URI) == $lastpath && $onbbstime < $db_refreshtime) {
@@ -1218,6 +1228,9 @@ function procUnLock($action = '', $uid = 0) {
  * @return float
  */
 function pwMicrotime() {
+//microtime() 当前 Unix 时间戳以及微秒数。本函数仅在支持 gettimeofday() 系统调用的操作系统下可用。
+//如果调用时不带可选参数，本函数以 "msec sec" 的格式返回一个字符串，其中 sec 是自 Unix 纪元（0:00:00 January 1, 1970 GMT）起到现在的秒数，msec 是微秒部分。字符串的两部分都是以秒为单位返回的。
+//用$t_array变量记录microtime()函数产生的msec和sec，此时$t_array代表数组
 	$t_array = explode(' ', microtime());
 	return $t_array[0] + $t_array[1];
 }
