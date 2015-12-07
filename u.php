@@ -3,13 +3,14 @@ define('SCR','u');
 require_once('global.php');
 require_once(R_P . 'u/require/core.php');
 //* include_once pwCache::getPath(D_P . 'data/bbscache/o_config.php');
+//读取缓存路径与写缓存数据服务
 pwCache::getData(D_P . 'data/bbscache/o_config.php');
 $o_sitename = $o_sitename ? $o_sitename :  $db_bbsname;
 //导航
 $homenavigation = array();
 $navConfigService = L::loadClass('navconfig', 'site');
 $homenavigation = $navConfigService->userHomeNavigation(PW_NAV_TYPE_MAIN, 'o');
-
+//初始化$_GET/$_POST全局变量
 S::gp(array('a', 'uid', 'username', 'contenttype'));
 $pwModeImg = "$imgpath/apps";
 if ($a && in_array($a, array('set', 'ajax', 'friend', 'myapp', 'info', 'invite', 'board'))) {
